@@ -20,7 +20,22 @@ require 'get_coordinates.php';
             if (parcels.length) {
                 const map = L.map('map').setView(parcels[0].coordinates, 17);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.tileLayer('https://ags.cuzk.gov.cz/arcgis1/rest/services/ORTOFOTO_WM/MapServer/tile/{z}/{y}/{x}', {
+                    maxZoom: 20,
+                    minZoom: 6,
+                    attribution: '© <a href="https://geoportal.cuzk.cz/" target="_blank">ČÚZK – Ortofoto</a>',
+                    tileSize: 256
+                }).addTo(map);  // Přidá se jako base
+
+                L.tileLayer('https://services.cuzk.gov.cz/wmts/local-km-wmts-google/rest/WMTS/{style}/{tileMatrixSet}/{z}/{y}/{x}', {
+                    style: 'default',
+                    tileMatrixSet: 'KN',
+                    format: 'image/png',
+                    attribution: '© <a href="https://geoportal.cuzk.cz/" target="_blank">ČÚZK</a> – Katastrální mapa',
+                    tileSize: 256,
+                }).addTo(map);
+
+                // L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
                 const bounds = L.latLngBounds();
                 parcels.forEach(parcel => {
