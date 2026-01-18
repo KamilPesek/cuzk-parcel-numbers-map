@@ -1,14 +1,19 @@
 <?php
-@require 'get_coordinates.php';
-$existingParcelNumbers = getParcelCoordinates();
+declare(strict_types=1);
 
-var_Dump($existingParcelNumbers);
+require __DIR__ .'/../config/config.php';
+require __DIR__ .'/../vendor/autoload.php';
+require 'get_coordinates.php';
+
+$existingParcelNumbers = getParcelsForLeaflet();
+
+var_dump($existingParcelNumbers);
 exit;
 ?>
 
 <html lang="cs">
     <head>
-        <title>Title of the document</title>
+        <title>ČÚZK - show parcel numbers on the map</title>
     </head>
     <body style="margin: 20px;">
         <div id="map" style="height: calc(100vh - 40px)"></div>

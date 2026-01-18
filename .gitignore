@@ -1,3 +1,4 @@
 .idea
-parcel_numbers.json
-parcel_coordinates.json
+vendor
+config/*
+!*.dist

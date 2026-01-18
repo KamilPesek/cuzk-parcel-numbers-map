@@ -1,0 +1,8 @@
+<?php
+declare(strict_types=1);
+
+const INPUT_FILE_PATH = __DIR__ . '/../config/parcel_numbers.json';
+const OUTPUT_FILE_PATH = __DIR__ . '/../config/parcel_coordinates.json';
+const CUZK_API_BASE_URL = 'https://api-kn.cuzk.gov.cz/api/v1/Parcely/Vyhledani';
+const ENABLE_LOGGING = false;
+const API_KEY = '';
