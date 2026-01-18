@@ -1,39 +1,46 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ .'/../config/config.php';
-require __DIR__ .'/../vendor/autoload.php';
+require __DIR__ . '/../config/config.php';
+require __DIR__ . '/../vendor/autoload.php';
 require 'get_coordinates.php';
-
-$existingParcelNumbers = getParcelsForLeaflet();
-
-var_dump($existingParcelNumbers);
-exit;
 ?>
 
 <html lang="cs">
     <head>
         <title>ČÚZK - show parcel numbers on the map</title>
+        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
     </head>
     <body style="margin: 20px;">
         <div id="map" style="height: calc(100vh - 40px)"></div>
-        <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
 
         <script>
-            var map = L.map('map').setView([49.8381, 13.4957], 17);
+            const parcels = <?php echo json_encode(getParcelsForLeaflet(), JSON_THROW_ON_ERROR); ?>;
+            if (parcels.length) {
+                const map = L.map('map').setView(parcels[0].coordinates, 17);
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-            var polygonCoords = [
-                [49.8381, 13.4957],
-                [49.8382, 13.4958],
-                [49.8383, 13.4956],
-                // … all points from outer ring (index 0)
-            ];
+                const bounds = L.latLngBounds();
+                parcels.forEach(parcel => {
+                    const [lat, lng] = parcel.coordinates;
 
-            L.polygon(polygonCoords, {color: 'blue'}).addTo(map)
-                .bindPopup("Parcel 506/15");
+                    const popupHtml = `
+                        <strong>Parcelní číslo:</strong> ${parcel.parcelNumber}<br>
+                        <strong>Katastrální území:</strong> ${parcel.cadastralAreaName} [${parcel.cadastralArea}]<br>
+                        <strong>Druh pozemku:</strong> ${parcel.landType}
+                    `;
+
+                    L.marker([lat, lng])
+                        .addTo(map)
+                        .bindPopup(popupHtml);
+
+                    bounds.extend(parcel.coordinates);
+                });
+
+                map.fitBounds(bounds, {padding: [20, 20]});
+            }
         </script>
     </body>
 </html>
