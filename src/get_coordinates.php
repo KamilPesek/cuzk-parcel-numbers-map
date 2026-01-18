@@ -19,6 +19,7 @@ function getParcelsForLeaflet(): array
     $parcelInfos = getParcelInfos();
 
     $parcelsForLeaflet = [];
+    $parcelsNotFound = [];
     foreach ($parcelInfos as $cadastralArea => $parcelsInCadastralArea) {
         foreach ($parcelsInCadastralArea as $parcelNumber => $parcelInfo) {
             if ($parcelInfo) {
@@ -28,12 +29,15 @@ function getParcelsForLeaflet(): array
                     'parcelNumber' => $parcelNumber,
                     'coordinates' => [$parcelInfo['definicniBod']['lat'], $parcelInfo['definicniBod']['long']],
                     'landType' => $parcelInfo['druhPozemku']['nazev'],
+                    'area' => $parcelInfo['vymera'],
                 ];
+            } else {
+                $parcelsNotFound[] = $cadastralArea . ' - ' . $parcelNumber;
             }
         }
     }
 
-    return $parcelsForLeaflet;
+    return [$parcelsForLeaflet, $parcelsNotFound];
 }
 
 /**
