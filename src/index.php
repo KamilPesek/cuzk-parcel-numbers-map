@@ -33,11 +33,11 @@ require 'get_coordinates.php';
                     minZoom: 6,
                     attribution: '© <a href="https://geoportal.cuzk.cz/" target="_blank">ČÚZK – Ortofoto</a>',
                     tileSize: 256
-                }).addTo(map);  // Přidá se jako base
+                }).addTo(map);
 
 
                 /**
-                 * ! This layer is available on for specific zooms!
+                 * ! This layer is available only for specific zooms!
                  */
                 L.tileLayer('https://services.cuzk.gov.cz/wmts/local-km-wmts-google/rest/WMTS/{style}/{tileMatrixSet}/{z}/{y}/{x}', {
                     style: 'default',

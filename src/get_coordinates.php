@@ -136,6 +136,7 @@ function getParcelInfo(string $cadastralArea, string $parcelNumber): ?array
     try {
         $data = json_decode($response, true, 512, JSON_THROW_ON_ERROR);
     } catch (JsonException $e) {
+        logMessage('JsonException - ' . $e->getMessage());
         return null;
     }
 

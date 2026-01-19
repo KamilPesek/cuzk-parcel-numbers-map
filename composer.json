@@ -1,5 +1,6 @@
 {
-    "require": {
-        "proj4php/proj4php": "^2.0"
-    }
+  "require": {
+    "proj4php/proj4php": "^2.0",
+    "ext-curl": "*"
+  }
 }
